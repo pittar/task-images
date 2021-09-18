@@ -5,7 +5,7 @@ ENV OCP_TOOLS_VERSION=4.8
 # curl and jq required for this.
 RUN dnf makecache && \
     dnf install -y \
-    openssl yq curl \
+    openssl jq \
     && dnf clean all && rm -rf /var/cache/dnf/*
 
 WORKDIR /download
