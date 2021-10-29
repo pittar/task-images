@@ -20,7 +20,7 @@ RUN curl https://mirror.openshift.com/pub/openshift-v4/clients/ocp/stable-$OCP_T
 
 RUN wget https://github.com/mikefarah/yq/releases/download/${YQ_VERSION}/${YQ_BINARY}.tar.gz -O - | \
     tar xz && \
-    mv ${BINARY} \
+    mv ${YQ_BINARY} \
     /usr/bin/yq
 
 WORKDIR /
