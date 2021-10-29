@@ -1,6 +1,6 @@
 FROM registry.access.redhat.com/ubi8/ubi:8.4
 
-ENV OCP_TOOLS_VERSION=4.8
+ENV OCP_TOOLS_VERSION=4.9
 ENV YQ_VERSION=v4.13.5
 ENV YQ_BINARY=yq_linux_amd64
 
