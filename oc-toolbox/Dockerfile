@@ -26,7 +26,9 @@ RUN curl https://mirror.openshift.com/pub/rhacs/assets/$ROXCTL_VERSION/bin/Linux
     chmod a+x /usr/bin/roxctl
 
 # yq
-RUN curl https://github.com/mikefarah/yq/releases/download/${YQ_VERSION}/${YQ_BINARY}.tar.gz | tar -xz && \
-    mv ${YQ_BINARY} /usr/bin/yq
+RUN wget https://github.com/mikefarah/yq/releases/download/${YQ_VERSION}/${YQ_BINARY}.tar.gz -O - | \
+    tar xz && \
+    mv ${YQ_BINARY} \
+    /usr/bin/yq
 
 WORKDIR /
