@@ -10,7 +10,7 @@ ENV ROXCTL_VERSION=3.66.1
 #    * More to come...
 RUN dnf makecache && \
     dnf install -y \
-    openssl jq \
+    openssl wget jq \
     && dnf clean all && rm -rf /var/cache/dnf/*
 
 WORKDIR /download
