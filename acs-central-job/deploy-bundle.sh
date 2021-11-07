@@ -27,10 +27,7 @@ help () {
   echo ""
 } >&2
 
-if [ -z "$ROX_API_TOKEN" ]; then
-	echo "The ROX_API_TOKEN environment variable must be set to a valid API token." >&2
-	exit 1
-fi
+
 
 NAMESPACE=stackrox
 CENTRALNS=stackrox
@@ -61,6 +58,23 @@ while [[ $# -gt 0 ]]; do
         esac
 done
 set -- "${POSITIONAL[@]}" # restore positional parameters
+
+
+# Wait for central to be ready
+attempt_counter=0
+max_attempts=30
+echo "Waiting for central to be available..."
+until $(curl -k --output /dev/null --silent --head --fail https://central); do
+    if [ ${attempt_counter} -eq ${max_attempts} ];then
+      echo "Max attempts reached"
+      exit 1
+    fi
+    printf '.'
+    attempt_counter=$(($attempt_counter+1))
+    echo "Made attempt $attempt_counter, waiting 10 seconds..."
+    sleep 10
+done
+
 
 ACS_HOST="$(oc get route -n $CENTRALNS central -o custom-columns=HOST:.spec.host --no-headers):443"
 if [[ -z "$ACS_HOST" ]]; then
