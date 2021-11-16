@@ -207,6 +207,7 @@ spec:
     - key: vendor
       operator: In
       values:
-      - OpenShift
+      - "OpenShift"
 ---
 EOF
+
