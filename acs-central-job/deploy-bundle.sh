@@ -97,11 +97,8 @@ if ! [ -x "$(command -v kubectl)" ]; then
     exit 1
 fi
 
-if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-    BASE='base64 -w 0'
-elif [[ "$OSTYPE" == "darwin"* ]]; then
-    BASE='base64'
-fi
+# Base64 command to use.
+BASE='base64'
 
 if [ -f "${BUNDLE_FILE}" ]; then
 	echo "# Using existing bundle file." >&2
