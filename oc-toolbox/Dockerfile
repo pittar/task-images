@@ -5,6 +5,10 @@ ENV YQ_VERSION=v4.14.1
 ENV YQ_BINARY=yq_linux_amd64
 ENV ROXCTL_VERSION=3.66.1
 
+RUN mkdir -p ~/.kube && \
+    chgrp -R 0 ~/.kube && \
+    chmod -R g+rwX ~/.kube
+
 # Curl already exists, but add:
 #    * JQ & YQ
 #    * More to come...
