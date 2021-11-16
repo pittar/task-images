@@ -98,7 +98,7 @@ if ! [ -x "$(command -v kubectl)" ]; then
 fi
 
 # Base64 command to use.
-BASE='base64'
+BASE='base64 -w 0'
 
 if [ -f "${BUNDLE_FILE}" ]; then
 	echo "# Using existing bundle file." >&2
@@ -206,5 +206,6 @@ spec:
       values:
       - "OpenShift"
 ---
+
 EOF
 
