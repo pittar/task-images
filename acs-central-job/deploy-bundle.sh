@@ -222,7 +222,23 @@ spec:
       - "OpenShift"
 EOF
 
+cat <<EOF >> /manifests/kustomization.yaml
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - stackrox-ns.yaml
+  - stackrox-staging-ns.yaml
+  - stackrox-channel-ns.yaml
+  - admission-control-tls-secret.yaml
+  - collector-tls-secret.yaml
+  - sensor-tls-secret.yaml
+  - secured-cluster-channel.yaml
+  - secured-cluster-subscription.yaml
+  - secured-cluster-placementrule.yaml
+EOF
+
 ls -ls /manifests
 
 echo "Apply all resources."
-oc apply -f /manifests
+oc apply -k /manifests
