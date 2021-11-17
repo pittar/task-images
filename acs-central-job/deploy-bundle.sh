@@ -260,3 +260,5 @@ oc apply -f /manifests/secured-cluster-placementrule.yaml
 echo "Printing manifests for debug purposes."
 
 cat /manifests/*.yaml
+
+sleep 600
