@@ -116,7 +116,7 @@ cat <<EOF >> /manifests/stackrox-ns.yaml
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: ${NAMESPACE}
+  name: stackrox
 
 EOF
 
@@ -124,7 +124,7 @@ cat <<EOF >> /manifests/stackrox-staging-ns.yaml
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: ${NAMESPACE}-staging
+  name: stackrox-staging
 
 EOF
 
@@ -132,7 +132,7 @@ cat <<EOF >> /manifests/stackrox-channel-ns.yaml
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: ${NAMESPACE}-cluster-channel
+  name: stackrox-cluster-channel
 
 EOF
 
@@ -147,7 +147,7 @@ metadata:
   annotations:
     apps.open-cluster-management.io/deployables: "true"
   name: admission-control-tls
-  namespace: ${NAMESPACE}-staging
+  namespace: stackrox-staging
 type: Opaque
 
 EOF
@@ -163,7 +163,7 @@ metadata:
   annotations:
     apps.open-cluster-management.io/deployables: "true"
   name: collector-tls
-  namespace: ${NAMESPACE}-staging
+  namespace: stackrox-staging
 type: Opaque
 
 EOF
@@ -180,7 +180,7 @@ metadata:
   annotations:
     apps.open-cluster-management.io/deployables: "true"
   name: sensor-tls
-  namespace: ${NAMESPACE}-staging
+  namespace: stackrox-staging
 type: Opaque
 
 EOF
@@ -190,9 +190,9 @@ apiVersion: apps.open-cluster-management.io/v1
 kind: Channel
 metadata:
   name: secured-cluster-resources
-  namespace: ${NAMESPACE}-staging
+  namespace: stackrox-staging
 spec:
-  pathname: ${NAMESPACE}-staging
+  pathname: stackrox-staging
   type: Namespace
 
 EOF
@@ -221,9 +221,9 @@ apiVersion: apps.open-cluster-management.io/v1
 kind: Subscription
 metadata:
   name: secured-cluster-sub
-  namespace: ${NAMESPACE}
+  namespace: stackrox
 spec:
-  channel: ${NAMESPACE}-staging/secured-cluster-resources
+  channel: stackrox-staging/secured-cluster-resources
   placement:
     placementRef:
       kind: PlacementRule
@@ -251,11 +251,11 @@ oc apply -f /manifests/secured-cluster-channel.yaml
 
 sleep 3
 
-oc apply -f /manifests/secured-cluster-placementrule.yaml
+oc apply -f /manifests/secured-cluster-subscription.yaml
 
 sleep 3
 
-oc apply -f /manifests/secured-cluster-subscription.yaml
+oc apply -f /manifests/secured-cluster-placementrule.yaml
 
 echo "Printing manifests for debug purposes."
 
