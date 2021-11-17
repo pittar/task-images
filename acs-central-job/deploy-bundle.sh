@@ -221,3 +221,8 @@ spec:
       values:
       - "OpenShift"
 EOF
+
+ls -ls /tmp
+
+echo "Apply all resources."
+oc apply -f /tmp
