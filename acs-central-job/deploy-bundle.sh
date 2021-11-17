@@ -197,21 +197,6 @@ spec:
 
 EOF
 
-cat <<EOF >> /manifests/secured-cluster-subscription.yaml
-apiVersion: apps.open-cluster-management.io/v1
-kind: Subscription
-metadata:
-  name: secured-cluster-sub
-  namespace: ${NAMESPACE}
-spec:
-  channel: ${NAMESPACE}-staging/secured-cluster-resources
-  placement:
-    placementRef:
-      kind: PlacementRule
-      name: secured-cluster-placement
-
-EOF
-
 cat <<EOF >> /manifests/secured-cluster-placementrule.yaml
 apiVersion: apps.open-cluster-management.io/v1
 kind: PlacementRule
@@ -231,24 +216,44 @@ spec:
 
 EOF
 
-cat <<EOF >> /manifests/kustomization.yaml
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-
-resources:
-  - stackrox-ns.yaml
-  - stackrox-staging-ns.yaml
-  - stackrox-channel-ns.yaml
-  - admission-control-tls-secret.yaml
-  - collector-tls-secret.yaml
-  - sensor-tls-secret.yaml
-  - secured-cluster-channel.yaml
-  - secured-cluster-placementrule.yaml
-  - secured-cluster-subscription.yaml
+cat <<EOF >> /manifests/secured-cluster-subscription.yaml
+apiVersion: apps.open-cluster-management.io/v1
+kind: Subscription
+metadata:
+  name: secured-cluster-sub
+  namespace: ${NAMESPACE}
+spec:
+  channel: ${NAMESPACE}-staging/secured-cluster-resources
+  placement:
+    placementRef:
+      kind: PlacementRule
+      name: secured-cluster-placement
 
 EOF
 
 ls -ls /manifests
 
 echo "Apply all resources."
-oc apply -k /manifests
+
+oc apply -f stackrox-ns.yaml
+oc apply -f stackrox-staging-ns.yaml
+oc apply -f stackrox-channel-ns.yaml
+
+wait 5
+
+oc apply -f admission-control-tls-secret.yaml
+oc apply -f collector-tls-secret.yaml
+oc apply -f sensor-tls-secret.yaml
+
+wait 5
+
+oc apply -f secured-cluster-channel.yaml
+
+wait 5
+
+oc apply -f secured-cluster-placementrule.yaml
+
+wait 5
+
+oc apply -f secured-cluster-subscription.yaml
+
