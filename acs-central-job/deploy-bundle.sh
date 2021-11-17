@@ -212,14 +212,14 @@ metadata:
   namespace: ${NAMESPACE}
 spec:
   clusterConditions:
-  - status: "True"
-    type: ManagedClusterConditionAvailable
+    - status: 'True'
+      type: ManagedClusterConditionAvailable
   clusterSelector:
     matchExpressions:
-    - key: vendor
-      operator: In
-      values:
-      - "OpenShift"
+      - key: vendor
+        operator: In
+        values:
+          - OpenShift
 EOF
 
 cat <<EOF >> /manifests/kustomization.yaml
