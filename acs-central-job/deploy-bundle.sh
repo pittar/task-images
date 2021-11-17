@@ -235,25 +235,25 @@ ls -ls /manifests
 
 echo "Apply all resources."
 
-oc apply -f /manifest/stackrox-ns.yaml
-oc apply -f /manifest/stackrox-staging-ns.yaml
-oc apply -f /manifest/stackrox-channel-ns.yaml
+oc apply -f /manifests/stackrox-ns.yaml
+oc apply -f /manifests/stackrox-staging-ns.yaml
+oc apply -f /manifests/stackrox-channel-ns.yaml
 
 wait 3
 
-oc apply -f /manifest/admission-control-tls-secret.yaml
-oc apply -f /manifest/collector-tls-secret.yaml
-oc apply -f /manifest/sensor-tls-secret.yaml
+oc apply -f /manifests/admission-control-tls-secret.yaml
+oc apply -f /manifests/collector-tls-secret.yaml
+oc apply -f /manifests/sensor-tls-secret.yaml
 
 wait 3
 
-oc apply -f /manifest/secured-cluster-channel.yaml
+oc apply -f /manifests/secured-cluster-channel.yaml
 
 wait 3
 
-oc apply -f /manifest/secured-cluster-placementrule.yaml
+oc apply -f /manifests/secured-cluster-placementrule.yaml
 
 wait 3
 
-oc apply -f /manifest/secured-cluster-subscription.yaml
+oc apply -f /manifests/secured-cluster-subscription.yaml
 
