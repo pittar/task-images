@@ -112,23 +112,28 @@ else
 fi
 
 CACERT=`yq eval '.ca.cert' ${BUNDLE_FILE} | sed 's/^/                    /'`
-cat <<EOF
----
+cat <<EOF >> /tmp/stackrox-ns.yaml
 apiVersion: v1
 kind: Namespace
 metadata:
   name: ${NAMESPACE}
----
+EOF
+
+cat <<EOF >> /tmp/stackrox-staging-ns.yaml
 apiVersion: v1
 kind: Namespace
 metadata:
   name: ${NAMESPACE}-staging
----
+EOF
+
+cat <<EOF >> /tmp/stackrox-channel-ns.yaml
 apiVersion: v1
 kind: Namespace
 metadata:
   name: ${NAMESPACE}-cluster-channel
----
+EOF
+
+cat <<EOF /tmp/admission-control-tls-secret.yaml
 apiVersion: v1
 data:
   admission-control-cert.pem: `yq eval '.admissionControl.serviceTLS.cert' ${BUNDLE_FILE} | ${BASE}`
@@ -141,7 +146,9 @@ metadata:
   name: admission-control-tls
   namespace: ${NAMESPACE}-staging
 type: Opaque
----
+EOF
+
+cat <<EOF >> /tmp/collector-tls-secret.yaml
 apiVersion: v1
 data:
   collector-cert.pem: `yq eval '.collector.serviceTLS.cert' ${BUNDLE_FILE} | ${BASE}`
@@ -154,7 +161,9 @@ metadata:
   name: collector-tls
   namespace: ${NAMESPACE}-staging
 type: Opaque
----
+EOF
+
+cat <<EOF >> /tmp/sensor-tls-secret.yaml
 apiVersion: v1
 data:
   sensor-cert.pem: `yq eval '.sensor.serviceTLS.cert' ${BUNDLE_FILE} | ${BASE}`
@@ -168,7 +177,9 @@ metadata:
   name: sensor-tls
   namespace: ${NAMESPACE}-staging
 type: Opaque
----
+EOF
+
+cat <<EOF >> /tmp/secured-cluster-channel.yaml
 apiVersion: apps.open-cluster-management.io/v1
 kind: Channel
 metadata:
@@ -177,7 +188,9 @@ metadata:
 spec:
   pathname: ${NAMESPACE}-staging
   type: Namespace
----
+EOF
+
+cat <<EOF >> /tmp/secured-cluster-subscription.yaml
 apiVersion: apps.open-cluster-management.io/v1
 kind: Subscription
 metadata:
@@ -189,7 +202,9 @@ spec:
     placementRef:
       kind: PlacementRule
       name: secured-cluster-placement
----
+EOF
+
+cat <<EOF >> /tmp/secured-cluster-placementrule.yaml
 apiVersion: apps.open-cluster-management.io/v1
 kind: PlacementRule
 metadata:
@@ -205,7 +220,4 @@ spec:
       operator: In
       values:
       - "OpenShift"
----
-
 EOF
-
