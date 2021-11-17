@@ -112,28 +112,28 @@ else
 fi
 
 CACERT=`yq eval '.ca.cert' ${BUNDLE_FILE} | sed 's/^/                    /'`
-cat <<EOF >> /tmp/stackrox-ns.yaml
+cat <<EOF >> /manifests/stackrox-ns.yaml
 apiVersion: v1
 kind: Namespace
 metadata:
   name: ${NAMESPACE}
 EOF
 
-cat <<EOF >> /tmp/stackrox-staging-ns.yaml
+cat <<EOF >> /manifests/stackrox-staging-ns.yaml
 apiVersion: v1
 kind: Namespace
 metadata:
   name: ${NAMESPACE}-staging
 EOF
 
-cat <<EOF >> /tmp/stackrox-channel-ns.yaml
+cat <<EOF >> /manifests/stackrox-channel-ns.yaml
 apiVersion: v1
 kind: Namespace
 metadata:
   name: ${NAMESPACE}-cluster-channel
 EOF
 
-cat <<EOF /tmp/admission-control-tls-secret.yaml
+cat <<EOF >> /manifests/admission-control-tls-secret.yaml
 apiVersion: v1
 data:
   admission-control-cert.pem: `yq eval '.admissionControl.serviceTLS.cert' ${BUNDLE_FILE} | ${BASE}`
@@ -148,7 +148,7 @@ metadata:
 type: Opaque
 EOF
 
-cat <<EOF >> /tmp/collector-tls-secret.yaml
+cat <<EOF >> /manifests/collector-tls-secret.yaml
 apiVersion: v1
 data:
   collector-cert.pem: `yq eval '.collector.serviceTLS.cert' ${BUNDLE_FILE} | ${BASE}`
@@ -163,7 +163,7 @@ metadata:
 type: Opaque
 EOF
 
-cat <<EOF >> /tmp/sensor-tls-secret.yaml
+cat <<EOF >> /manifests/sensor-tls-secret.yaml
 apiVersion: v1
 data:
   sensor-cert.pem: `yq eval '.sensor.serviceTLS.cert' ${BUNDLE_FILE} | ${BASE}`
@@ -179,7 +179,7 @@ metadata:
 type: Opaque
 EOF
 
-cat <<EOF >> /tmp/secured-cluster-channel.yaml
+cat <<EOF >> /manifests/secured-cluster-channel.yaml
 apiVersion: apps.open-cluster-management.io/v1
 kind: Channel
 metadata:
@@ -190,7 +190,7 @@ spec:
   type: Namespace
 EOF
 
-cat <<EOF >> /tmp/secured-cluster-subscription.yaml
+cat <<EOF >> /manifests/secured-cluster-subscription.yaml
 apiVersion: apps.open-cluster-management.io/v1
 kind: Subscription
 metadata:
@@ -204,7 +204,7 @@ spec:
       name: secured-cluster-placement
 EOF
 
-cat <<EOF >> /tmp/secured-cluster-placementrule.yaml
+cat <<EOF >> /manifests/secured-cluster-placementrule.yaml
 apiVersion: apps.open-cluster-management.io/v1
 kind: PlacementRule
 metadata:
@@ -222,7 +222,7 @@ spec:
       - "OpenShift"
 EOF
 
-ls -ls /tmp
+ls -ls /manifests
 
 echo "Apply all resources."
-oc apply -f /tmp
+oc apply -f /manifests
