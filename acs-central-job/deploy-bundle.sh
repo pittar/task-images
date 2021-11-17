@@ -202,7 +202,7 @@ apiVersion: apps.open-cluster-management.io/v1
 kind: PlacementRule
 metadata:
   name: secured-cluster-placement
-  namespace: ${NAMESPACE}
+  namespace: stackrox
 spec:
   clusterConditions:
     - status: 'True'
