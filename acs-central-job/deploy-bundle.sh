@@ -230,3 +230,33 @@ spec:
       name: secured-cluster-placement
 
 EOF
+
+ls -la /manifests
+
+echo "Apply all resources."
+
+oc apply -f /manifests/stackrox-ns.yaml
+oc apply -f /manifests/stackrox-staging-ns.yaml
+oc apply -f /manifests/stackrox-channel-ns.yaml
+
+sleep 3
+
+oc apply -f /manifests/admission-control-tls-secret.yaml
+oc apply -f /manifests/collector-tls-secret.yaml
+oc apply -f /manifests/sensor-tls-secret.yaml
+
+sleep 3
+
+oc apply -f /manifests/secured-cluster-channel.yaml
+
+sleep 3
+
+oc apply -f /manifests/secured-cluster-placementrule.yaml
+
+sleep 3
+
+oc apply -f /manifests/secured-cluster-subscription.yaml
+
+echo "Printing manifests for debug purposes."
+
+cat /manifests/*.yaml
