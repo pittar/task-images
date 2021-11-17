@@ -117,6 +117,7 @@ apiVersion: v1
 kind: Namespace
 metadata:
   name: ${NAMESPACE}
+
 EOF
 
 cat <<EOF >> /manifests/stackrox-staging-ns.yaml
@@ -124,6 +125,7 @@ apiVersion: v1
 kind: Namespace
 metadata:
   name: ${NAMESPACE}-staging
+
 EOF
 
 cat <<EOF >> /manifests/stackrox-channel-ns.yaml
@@ -131,6 +133,7 @@ apiVersion: v1
 kind: Namespace
 metadata:
   name: ${NAMESPACE}-cluster-channel
+
 EOF
 
 cat <<EOF >> /manifests/admission-control-tls-secret.yaml
@@ -146,6 +149,7 @@ metadata:
   name: admission-control-tls
   namespace: ${NAMESPACE}-staging
 type: Opaque
+
 EOF
 
 cat <<EOF >> /manifests/collector-tls-secret.yaml
@@ -161,6 +165,7 @@ metadata:
   name: collector-tls
   namespace: ${NAMESPACE}-staging
 type: Opaque
+
 EOF
 
 cat <<EOF >> /manifests/sensor-tls-secret.yaml
@@ -177,6 +182,7 @@ metadata:
   name: sensor-tls
   namespace: ${NAMESPACE}-staging
 type: Opaque
+
 EOF
 
 cat <<EOF >> /manifests/secured-cluster-channel.yaml
@@ -188,6 +194,7 @@ metadata:
 spec:
   pathname: ${NAMESPACE}-staging
   type: Namespace
+
 EOF
 
 cat <<EOF >> /manifests/secured-cluster-subscription.yaml
@@ -202,6 +209,7 @@ spec:
     placementRef:
       kind: PlacementRule
       name: secured-cluster-placement
+
 EOF
 
 cat <<EOF >> /manifests/secured-cluster-placementrule.yaml
@@ -220,6 +228,7 @@ spec:
         operator: In
         values:
           - OpenShift
+
 EOF
 
 cat <<EOF >> /manifests/kustomization.yaml
@@ -234,8 +243,9 @@ resources:
   - collector-tls-secret.yaml
   - sensor-tls-secret.yaml
   - secured-cluster-channel.yaml
-  - secured-cluster-subscription.yaml
   - secured-cluster-placementrule.yaml
+  - secured-cluster-subscription.yaml
+
 EOF
 
 ls -ls /manifests
