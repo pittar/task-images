@@ -1,9 +1,9 @@
-FROM registry.access.redhat.com/ubi8/ubi:8.4
+FROM registry.access.redhat.com/ubi8/ubi:8.6
 
-ENV OCP_TOOLS_VERSION=4.9
-ENV YQ_VERSION=v4.14.1
+ENV OCP_TOOLS_VERSION=4.10
+ENV YQ_VERSION=v4.25.3
 ENV YQ_BINARY=yq_linux_amd64
-ENV ROXCTL_VERSION=3.66.1
+ENV ROXCTL_VERSION=3.70.1
 
 RUN mkdir -p ~/.kube && \
     chgrp -R 0 ~/.kube && \
