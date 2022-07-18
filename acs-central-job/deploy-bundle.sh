@@ -112,29 +112,6 @@ else
 fi
 
 CACERT=`yq eval '.ca.cert' ${BUNDLE_FILE} | sed 's/^/                    /'`
-cat <<EOF >> /manifests/stackrox-ns.yaml
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: stackrox
-
-EOF
-
-cat <<EOF >> /manifests/stackrox-staging-ns.yaml
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: stackrox-staging
-
-EOF
-
-cat <<EOF >> /manifests/stackrox-channel-ns.yaml
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: stackrox-cluster-channel
-
-EOF
 
 cat <<EOF >> /manifests/admission-control-tls-secret.yaml
 apiVersion: v1
@@ -147,7 +124,7 @@ metadata:
   annotations:
     apps.open-cluster-management.io/deployables: "true"
   name: admission-control-tls
-  namespace: stackrox-staging
+  namespace: stackrox
 type: Opaque
 
 EOF
@@ -163,7 +140,7 @@ metadata:
   annotations:
     apps.open-cluster-management.io/deployables: "true"
   name: collector-tls
-  namespace: stackrox-staging
+  namespace: stackrox
 type: Opaque
 
 EOF
@@ -180,54 +157,8 @@ metadata:
   annotations:
     apps.open-cluster-management.io/deployables: "true"
   name: sensor-tls
-  namespace: stackrox-staging
+  namespace: stackrox
 type: Opaque
-
-EOF
-
-cat <<EOF >> /manifests/secured-cluster-channel.yaml
-apiVersion: apps.open-cluster-management.io/v1
-kind: Channel
-metadata:
-  name: secured-cluster-resources
-  namespace: stackrox-staging
-spec:
-  pathname: stackrox-staging
-  type: Namespace
-
-EOF
-
-cat <<EOF >> /manifests/secured-cluster-placementrule.yaml
-apiVersion: apps.open-cluster-management.io/v1
-kind: PlacementRule
-metadata:
-  name: secured-cluster-placement
-  namespace: stackrox
-spec:
-  clusterConditions:
-    - status: 'True'
-      type: ManagedClusterConditionAvailable
-  clusterSelector:
-    matchExpressions:
-      - key: vendor
-        operator: In
-        values:
-          - OpenShift
-
-EOF
-
-cat <<EOF >> /manifests/secured-cluster-subscription.yaml
-apiVersion: apps.open-cluster-management.io/v1
-kind: Subscription
-metadata:
-  name: secured-cluster-sub
-  namespace: stackrox
-spec:
-  channel: stackrox-staging/secured-cluster-resources
-  placement:
-    placementRef:
-      kind: PlacementRule
-      name: secured-cluster-placement
 
 EOF
 
@@ -235,27 +166,9 @@ ls -la /manifests
 
 echo "Apply all resources."
 
-oc apply -f /manifests/stackrox-ns.yaml
-oc apply -f /manifests/stackrox-staging-ns.yaml
-oc apply -f /manifests/stackrox-channel-ns.yaml
-
-sleep 3
-
 oc apply -f /manifests/admission-control-tls-secret.yaml
 oc apply -f /manifests/collector-tls-secret.yaml
 oc apply -f /manifests/sensor-tls-secret.yaml
-
-sleep 3
-
-oc apply -f /manifests/secured-cluster-channel.yaml
-
-sleep 3
-
-oc apply -f /manifests/secured-cluster-subscription.yaml
-
-sleep 3
-
-oc apply -f /manifests/secured-cluster-placementrule.yaml
 
 echo "Printing manifests for debug purposes."
 
