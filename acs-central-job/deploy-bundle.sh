@@ -174,4 +174,4 @@ echo "Printing manifests for debug purposes."
 
 cat /manifests/*.yaml
 
-sleep 600
+echo "Done"
