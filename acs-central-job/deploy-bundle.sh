@@ -123,8 +123,8 @@ kind: Secret
 metadata:
   annotations:
     apps.open-cluster-management.io/deployables: "true"
-  name: admission-control-tls
-  namespace: stackrox-policy
+  name: bundle-admission-control-tls
+  namespace: stackrox
 type: Opaque
 
 EOF
@@ -139,8 +139,8 @@ kind: Secret
 metadata:
   annotations:
     apps.open-cluster-management.io/deployables: "true"
-  name: collector-tls
-  namespace: stackrox-policy
+  name: bundle-collector-tls
+  namespace: stackrox
 type: Opaque
 
 EOF
@@ -156,8 +156,8 @@ kind: Secret
 metadata:
   annotations:
     apps.open-cluster-management.io/deployables: "true"
-  name: sensor-tls
-  namespace: stackrox-policy
+  name: bundle-sensor-tls
+  namespace: stackrox
 type: Opaque
 
 EOF
