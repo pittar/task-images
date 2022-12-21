@@ -20,12 +20,12 @@ RUN dnf makecache && \
 WORKDIR /download
 
 # oc and kubectl
-RUN curl https://mirror.openshift.com/pub/openshift-v4/clients/ocp/stable-$OCP_TOOLS_VERSION/openshift-client-linux.tar.gz | tar -xz && \
+RUN curl -s https://mirror.openshift.com/pub/openshift-v4/clients/ocp/stable-$OCP_TOOLS_VERSION/openshift-client-linux.tar.gz | tar -xz && \
     mv oc /usr/bin/oc && \
     mv kubectl /usr/bin/kubectl
     
 # roxctl
-RUN curl https://mirror.openshift.com/pub/rhacs/assets/$ROXCTL_VERSION/bin/Linux/roxctl -o roxctl && \
+RUN curl -s https://mirror.openshift.com/pub/rhacs/assets/$ROXCTL_VERSION/bin/Linux/roxctl -o roxctl && \
     mv roxctl /usr/bin/roxctl && \
     chmod a+x /usr/bin/roxctl
 
