@@ -1,9 +1,9 @@
 FROM registry.access.redhat.com/ubi8/ubi:8.6
 
-ENV OCP_TOOLS_VERSION=4.10
+ENV OCP_TOOLS_VERSION=4.11
 ENV YQ_VERSION=v4.25.3
 ENV YQ_BINARY=yq_linux_amd64
-ENV ROXCTL_VERSION=3.70.1
+ENV ROXCTL_VERSION=3.73.1
 
 RUN mkdir -p ~/.kube && \
     chgrp -R 0 ~/.kube && \
@@ -14,7 +14,7 @@ RUN mkdir -p ~/.kube && \
 #    * More to come...
 RUN dnf makecache && \
     dnf install -y \
-    openssl wget jq \
+    openssl wget jq skopeo \
     && dnf clean all && rm -rf /var/cache/dnf/*
 
 WORKDIR /download
