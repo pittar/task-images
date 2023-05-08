@@ -20,17 +20,17 @@ RUN dnf makecache && \
 WORKDIR /download
 
 # oc and kubectl
-RUN wget https://mirror.openshift.com/pub/openshift-v4/clients/ocp/stable-$OCP_TOOLS_VERSION/openshift-client-linux.tar.gz -O - | tar -xz && \
+RUN wget -q https://mirror.openshift.com/pub/openshift-v4/clients/ocp/stable-$OCP_TOOLS_VERSION/openshift-client-linux.tar.gz -O - | tar -xz && \
     mv oc /usr/bin/oc && \
     mv kubectl /usr/bin/kubectl
     
 # roxctl
-RUN wget https://mirror.openshift.com/pub/rhacs/assets/$ROXCTL_VERSION/bin/Linux/roxctl -O roxctl && \
+RUN wget -q https://mirror.openshift.com/pub/rhacs/assets/$ROXCTL_VERSION/bin/Linux/roxctl -O roxctl && \
     mv roxctl /usr/bin/roxctl && \
     chmod a+x /usr/bin/roxctl
 
 # yq
-RUN wget https://github.com/mikefarah/yq/releases/download/${YQ_VERSION}/${YQ_BINARY}.tar.gz -O - | \
+RUN wget -q https://github.com/mikefarah/yq/releases/download/${YQ_VERSION}/${YQ_BINARY}.tar.gz -O - | \
     tar xz && \
     mv ${YQ_BINARY} \
     /usr/bin/yq
