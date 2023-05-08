@@ -1,4 +1,4 @@
-FROM quay.io/pittar/tekton-oc-toolbox:latest
+FROM quay.io/pittar/tekton-oc-toolbox:new-acm-process
 
 RUN mkdir -p /scripts && \
     mkdir -p /manifests && \
