@@ -1,1 +1,35 @@
-# Task Containerfile
+# --- Stage 1: Build Stage (Builder) ---
+FROM quay.io/hummingbird/python:3-builder AS builder
+
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
+# Move to a directory owned by the non-root user
+WORKDIR /app
+
+# Create the venv inside our workdir instead of /opt
+RUN python3 -m venv .venv
+ENV PATH="/app/.venv/bin:$PATH"
+
+# Install dependencies
+COPY src/requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+
+# --- Stage 2: Final Runtime Stage ---
+FROM quay.io/hummingbird/python:3
+
+WORKDIR /app
+
+# Copy the venv from the builder's /app/.venv
+COPY --from=builder /app/.venv /app/.venv
+
+# Copy your application code
+COPY src .
+
+# Set environment variables
+ENV PATH="/app/.venv/bin:$PATH"
+ENV PYTHONUNBUFFERED=1
+
+# Ensure we run our script
+ENTRYPOINT ["python3", "main.py"]
